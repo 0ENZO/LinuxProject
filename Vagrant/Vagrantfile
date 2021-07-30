@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.network "public_network", bridge: "Intel(R) Dual Band Wireless-AC 8265 #2"
+  config.vm.hostname = "Vagrant-Ubuntu-M1"
+
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.memory = 2048
+    v.name ="Vagrant-Ubuntu-M1"
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update && sudo apt-get dist-upgrade -y
+    sudo apt-get upgrade -y
+    sudo usermod -a -G sudo vagrant
+    sudo apt install -y --no-install-recommends ubuntu-desktop
+    sudo apt install -y --no-install-recommends virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+    sudo apt-get install mysql-client -y
+    sudo apt-get install mysql-server -y
+    sudo apt-get install mysqldump -y
+    sudo apt-get install openssh-server -y
+    sudo apt-get install sshpass
+    sudo apt install -y firefox
+  SHELL
+end
